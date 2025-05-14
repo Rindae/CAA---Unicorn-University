@@ -1,0 +1,23 @@
+const DB = require("../database/index")
+
+const db = DB.getDatabase();
+
+async function getRating(id) {
+    return await db.query("SELECT * FROM Rating WHERE ID = ?", [id]);
+}
+
+async function getAllRatings() {
+    return await db.query("SELECT * FROM Rating")
+}
+
+async function createRating(id, placeId, username, rating){
+    console.debug("in model")
+    return await db.prepare("INSERT INTO Rating (id, placeId, username, rating) \
+                       VALUES (?, ?, ?, ?)", [id, placeId, username, rating]);
+}
+
+async function deleteRating(id) {
+    return await db.prepare("DELETE FROM Rating WHERE id = ?", id);
+}
+
+module.exports = {getRating, getAllRatings, createRating, deleteRating};
